@@ -10,8 +10,10 @@ library(ggplot2)
 
 # as.factor
 urbanization <- urbanization %>%
-  mutate(year = as.factor(year),
-         state = as.factor(state))
+  mutate(state = as.factor(state))
+
+urbanization <- urbanization %>%
+  mutate(year = factor(year, ordered = TRUE))
 # linear model
 base_model <- lm(Bird_Count ~ urban_area_km2, data = urbanization)
 summary(base_model)
@@ -36,7 +38,12 @@ ggplot(urbanization, aes(x = urban_area_km2, y = Bird_Count)) +
 quadratic_model <- lmer(Bird_Count ~ urban_area_km2 + I(urban_area_km2^2) + Temperature  + (1 | state) + (1 | year), data = urbanization)
 summary(quadratic_model)
 
+# GLM
+model_GLM <- glm(Bird_Count ~ year + urban_area_km2, data = urbanization, family = gaussian)
+summary(model_GLM)
+
+
 #  AIC
-AIC(base_model, mixed_model, quadratic_model)
+AIC(base_model, mixed_model, quadratic_model,model_GLM)
 
 
