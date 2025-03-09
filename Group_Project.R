@@ -38,7 +38,7 @@ ggplot(urbanization, aes(x = urban_area_km2, y = Bird_Count)) +
 quadratic_model <- lmer(Bird_Count ~ urban_area_km2 + I(urban_area_km2^2) + Temperature  + (1 | state) + (1 | year), data = urbanization)
 summary(quadratic_model)
 
-# GLM
+#GLM
 model_GLM <- glm(Bird_Count ~ year + urban_area_km2, data = urbanization, family = gaussian)
 summary(model_GLM)
 
