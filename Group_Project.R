@@ -18,21 +18,25 @@ urbanization <- urbanization %>%
 base_model <- lm(Bird_Count ~ urban_area_km2, data = urbanization)
 summary(base_model)
 
-# visulization
-ggplot(urbanization, aes(x = urban_area_km2, y = Bird_Count)) +
+# visualization
+UrbanVsBirdScatter<-ggplot(urbanization, aes(x = urban_area_km2, y = Bird_Count)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Urbanization", y = "Bird Count")
+
+print(UrbanVsBirdScatter)
 
 # mix_effect_model
 mixed_model <- lmer(Bird_Count ~ urban_area_km2 + Temperature + (1 | state) + (1 | year), data = urbanization)
 summary(mixed_model)
 
 
-ggplot(urbanization, aes(x = urban_area_km2, y = Bird_Count)) +
+MixedScatter<-ggplot(urbanization, aes(x = urban_area_km2, y = Bird_Count)) +
   geom_point() +
   geom_smooth(method = "lmer", se = FALSE) +
   labs(x = "Urbanization", y = "Bird Count")
+
+print(MixedScatter)
 
 # non_linear model
 quadratic_model <- lmer(Bird_Count ~ urban_area_km2 + I(urban_area_km2^2) + Temperature  + (1 | state) + (1 | year), data = urbanization)
