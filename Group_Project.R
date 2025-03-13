@@ -43,6 +43,53 @@ linear_plot_1 <- ggplot(urbanization_clean, aes(x = urban_area_km2, y = Bird_Cou
 
 linear_plot_1
 
+# Examine the Residuals
+# Examine the residuals
+
+residuals <- residuals(base_model)  
+fitted_values <- fitted(base_model)  
+
+# Residuals vs Fitted
+residual_plot <- ggplot(data = NULL, aes(x = fitted_values, y = residuals)) +
+  geom_point(color = "lightblue3", size = 1.5, alpha = 0.7) +
+  geom_hline(yintercept = 0, color = "darkgreen", linetype = "dashed", linewidth = 1) +
+  labs(
+    x = "Fitted Values",
+    y = "Residuals",
+    title = "Residuals vs Fitted Values"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_line(color = "gray90", linewidth = 0.2),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(size = 14, hjust = 0.5, face = "bold"),
+    axis.title.x = element_text(size = 12, margin = margin(t = 10)),
+    axis.title.y = element_text(size = 12, margin = margin(r = 10)),
+    axis.text = element_text(size = 10)
+  )
+residual_plot
+
+# Q-Q Plot
+qq_plot <- ggplot(data = NULL, aes(sample = residuals)) +
+  stat_qq(color = "lightblue3", size = 0.8, alpha = 0.7) +
+  stat_qq_line(color = "darkgreen", linetype = "dashed", linewidth = 0.8) +
+  labs(
+    x = "Theoretical Quantiles",
+    y = "Sample Quantiles",
+    title = "QQ Plot of Residuals"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_line(color = "gray90", linewidth = 0.2),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(size = 14, hjust = 0.5, face = "bold"),
+    axis.title.x = element_text(size = 12, margin = margin(t = 10)),
+    axis.title.y = element_text(size = 12, margin = margin(r = 10)),
+    axis.text = element_text(size = 10)
+  )
+qq_plot
+
+
 
 
 
