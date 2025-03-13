@@ -18,6 +18,34 @@ urbanization <- urbanization %>%
 base_model <- lm(Bird_Count ~ urban_area_km2, data = urbanization)
 summary(base_model)
 
+# linear model visulization
+
+library(ggplot2)
+library(dplyr)  
+
+linear_plot_1 <- ggplot(urbanization_clean, aes(x = urban_area_km2, y = Bird_Count)) +
+  geom_point(color = "lightblue3", size = 0.8, alpha = 0.7) +  
+  geom_smooth(method = "lm", se = FALSE, color = "darkgreen", linewidth = 1.2) +  
+  labs(
+    x = "Urbanization (Urban Area km²)", 
+    y = "Bird Count", 
+    title = "Relationship Between Urbanization and Bird Count"  
+  ) +
+  theme_minimal() +  
+  theme(
+    panel.grid.major = element_line(color = "gray90", linewidth = 0.2),  
+    panel.grid.minor = element_blank(), 
+    plot.title = element_text(size = 14, hjust = 0.5, face = "bold"),  
+    axis.title.x = element_text(size = 12, margin = margin(t = 10)),  
+    axis.title.y = element_text(size = 12, margin = margin(r = 10)),  
+    axis.text = element_text(size = 10)  
+  )
+
+linear_plot_1
+
+
+
+
 # visualization
 UrbanVsBirdScatter<-ggplot(urbanization, aes(x = urban_area_km2, y = Bird_Count)) +
   geom_point() +
