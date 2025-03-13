@@ -44,7 +44,6 @@ linear_plot_1 <- ggplot(urbanization_clean, aes(x = urban_area_km2, y = Bird_Cou
 linear_plot_1
 
 # Examine the Residuals
-# Examine the residuals
 
 residuals <- residuals(base_model)  
 fitted_values <- fitted(base_model)  
@@ -89,8 +88,10 @@ qq_plot <- ggplot(data = NULL, aes(sample = residuals)) +
   )
 qq_plot
 
+# Multiple Regression Model(Add temperature and precipitation)
 
-
+multiple_model<-lm(Bird_Count ~ urban_area_km2 + Temperature + Precipitation,data = urbanization_clean)
+summary(multiple_model)
 
 
 # visualization
