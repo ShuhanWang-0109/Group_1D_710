@@ -126,4 +126,43 @@ summary(model_GLM)
 #  AIC
 AIC(base_model, mixed_model, quadratic_model,model_GLM)
 
+# Sam's Plot
+ 
+#initial look at US urbanization trend by state/territory
+ 
+ urbanization_plot_absolutevaluescale <- urbanization%>%
+   filter(year %in% c(1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020)
+   ) %>%  # Years
+   ggplot(aes(x = factor(year), y = urban_area_km2, fill = factor(year))) +  
+   geom_bar(stat = "identity") +  #bar equals urban area
+   facet_wrap(~state) +  #faceted for each state
+   labs(
+     title = "Urbanization Trends by State/Territory by Year",
+     x = "Year",
+     y = "Urban Area (km²)",
+     fill = "Year") +
+   theme_minimal() +
+   theme(axis.text.x = element_text(angle = 75, hjust = 1, size=6))
+ 
+ print( urbanization_plot_absolutevaluescale)
+ 
+ 
+ #free y scale so that trends can be observed for smaller states
+ 
+ urbanization_plot_adjustedscale <- urbanization%>%
+   filter(year %in% c(1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020)
+   ) %>%  # Years
+   ggplot(aes(x = factor(year), y = urban_area_km2, fill = factor(year))) +  
+   geom_bar(stat = "identity") +  #bar equals urban area
+   facet_wrap(~state, scales = "free_y") +  #faceted for each state
+   labs(
+     title = "Urbanization Trends by State/Territory by Year",
+     x = "Year",
+     y = "Urban Area (km²)",
+     fill = "Year") +
+   theme_minimal() +
+   theme(axis.text.x = element_text(angle = 75, hjust = 1, size=6))
+ 
+ print(urbanization_plot_adjustedscale)
+ 
 
