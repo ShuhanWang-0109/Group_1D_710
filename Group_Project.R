@@ -156,7 +156,7 @@ AIC(base_model, mixed_model, quadratic_model,model_GLM)
    geom_bar(stat = "identity") +  #bar equals urban area
    facet_wrap(~state, scales = "free_y") +  #faceted for each state
    labs(
-     title = "Urbanization Trends by State/Territory by Year",
+     title = "Urbanization Trends by State/Territory by Year Adjusted Scale",
      x = "Year",
      y = "Urban Area (km²)",
      fill = "Year") +
