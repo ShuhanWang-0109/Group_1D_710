@@ -1,7 +1,7 @@
 #### Load the packages####
 
 library(readxl)
-X0329_Data <- read_excel("~/Public/Duke-2025/applied statistcal/Group_Projrct_Data/710_1D_Data/0329_Data.xlsx")
+X0329_Data <- read_excel("0329_Data.xlsx")
 View(X0329_Data)
 library(dplyr)
 library(lme4)
@@ -539,6 +539,109 @@ ggsave("Swainsons_Plot_Clean_Region.png", plot = Swainsons_plot, width = 12, hei
 
 
 
+# Hanbin
+## Poisson regression
+urbanization_p_t <- urbanization_clean %>%
+  filter(!is.na(Precipitation), !is.na(Temperature))
 
- 
+birdcount_glm_r_p_t <- glm(
+  Bird_Count ~ rate + Precipitation + Temperature,
+  data = urbanization_p_t,
+  family = "poisson")
+
+summary(birdcount_glm_r_p_t)
+plot(birdcount_glm_r_p_t)
+
+library(gtsummary)
+tbl_regression(birdcount_glm_r_p_t)
+
+
+
+## Non-linear effects
+birdcount_glm_quad <- glm(
+  Bird_Count ~ rate + Precipitation + I(Precipitation^2) + Temperature + I(Temperature^2),
+  data = urbanization_p_t,
+  family = "poisson")
+
+summary(birdcount_glm_quad)
+plot(birdcount_glm_quad)
+tbl_regression(birdcount_glm_quad)
+
+
+
+## Interaction between temperature and precipitation
+birdcount_interaction <- glm(
+  Bird_Count ~ rate + Temperature * Precipitation,
+  data = urbanization_p_t,
+  family = poisson()
+)
+summary(birdcount_interaction)
+plot(birdcount_interaction)
+tbl_regression(birdcount_interaction)
+
+
+
+## Visualize individual effects
+mean_temp <- mean(urbanization_p_t$Temperature, na.rm = TRUE)
+mean_precip <- mean(urbanization_p_t$Precipitation, na.rm = TRUE)
+mean_rate <- mean(urbanization_p_t$rate, na.rm = TRUE)
+
+newdata_rate <- data.frame(
+  rate = seq(min(urbanization_p_t$rate), max(urbanization_p_t$rate), length.out = 100),
+  Precipitation = mean_precip,
+  Temperature = mean_temp
+)
+View(newdata_rate)
+
+newdata_precip <- data.frame(
+  rate = mean_rate,
+  Precipitation = seq(min(urbanization_p_t$Precipitation), max(urbanization_p_t$Precipitation), length.out = 100),
+  Temperature = mean_temp
+)
+View(newdata_precip)
+
+newdata_temp <- data.frame(
+  rate = mean_rate,
+  Precipitation = mean_precip,
+  Temperature = seq(min(urbanization_p_t$Temperature), max(urbanization_p_t$Temperature), length.out = 100)
+)
+View(newdata_temp)
+
+newdata_rate$Predicted <- predict(birdcount_glm_r_p_t, newdata = newdata_rate, type = "response")
+View(newdata_rate)
+newdata_precip$Predicted <- predict(birdcount_glm_r_p_t, newdata = newdata_precip, type = "response")
+View(newdata_precip)
+newdata_temp$Predicted <- predict(birdcount_glm_r_p_t, newdata = newdata_temp, type = "response")
+View(newdata_temp)
+
+effect_urbanization <- ggplot(newdata_rate, aes(x = rate, y = Predicted)) +
+  geom_line(color = "steelblue", linewidth = 1.2) +
+  labs(
+    title = "Effect of Urbanization Rate on Bird Count",
+    x = "Urban Area per Capita",
+    y = "Predicted Bird Count"
+  ) +
+  theme_minimal()
+effect_urbanization
+
+effect_preciptation <- ggplot(newdata_precip, aes(x = Precipitation, y = Predicted)) +
+  geom_line(color = "darkgreen", linewidth = 1.2) +
+  labs(
+    title = "Effect of Precipitation on Bird Count",
+    x = "Precipitation",
+    y = "Predicted Bird Count"
+  ) +
+  theme_minimal()
+effect_preciptation
+
+effect_temperature <- ggplot(newdata_temp, aes(x = Temperature, y = Predicted)) +
+  geom_line(color = "firebrick", linewidth = 1.2) +
+  labs(
+    title = "Effect of Temperature on Bird Count",
+    x = "Temperature",
+    y = "Predicted Bird Count"
+  ) +
+  theme_minimal()
+effect_temperature
+
 
