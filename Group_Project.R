@@ -269,3 +269,12 @@ effect_temperature <- ggplot(newdata_temp, aes(x = Temperature, y = Predicted)) 
 effect_temperature
 
 
+
+## Descriptive Statistics for Data Set
+summary(urbanization_clean)
+sd(urbanization_clean$Bird_Count, na.rm = TRUE)
+sd(urbanization_clean$rate, na.rm = TRUE)
+sd(urbanization_clean$Precipitation, na.rm = TRUE)
+sd(urbanization_clean$Temperature, na.rm = TRUE)
+
+
