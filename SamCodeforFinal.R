@@ -196,7 +196,7 @@ SpeciesDataSwainson <- SpeciesDataSwainson %>%
 PintailByRegionPlot<-ggplot(SpeciesDataPintail, aes(x = Urban_Area_Per_Capita, y = `Northern Pintail`)) +
   geom_point(alpha = 0.6, color = "darkblue") +
   geom_smooth(method = "lm", se = FALSE, color = "firebrick") +
-  facet_wrap(region, scales = "free_y") +
+  facet_wrap(~region, scales = "free_y") +
   labs(
     title = "Northern Pintail Count vs Urban Area Per Capita by Region",
     x = "Urban Area Per Capita (km²/person)",
@@ -207,7 +207,7 @@ PintailByRegionPlot<-ggplot(SpeciesDataPintail, aes(x = Urban_Area_Per_Capita, y
 SwainsonByRegionPlot<-ggplot(SpeciesDataSwainson, aes(x = Urban_Area_Per_Capita, y = `Swainson's Hawk`)) +
   geom_point(alpha = 0.6, color = "darkgreen") +
   geom_smooth(method = "lm", se = FALSE, color = "orange") +
-  facet_wrap(region, scales = "free_y") +
+  facet_wrap(~region, scales = "free_y") +
   labs(
     title = "Swainson's Hawk Count vs Urban Area Per Capita by Region",
     x = "Urban Area Per Capita (km²/person)",
